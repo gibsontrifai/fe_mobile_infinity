@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:safetyfeapps/screens/HelpScreen.dart';
-import 'package:safetyfeapps/screens/LocationScreen.dart';
+// import 'package:safetyfeapps/screens/LocationScreen.dart';
+import 'package:safetyfeapps/screens/location_screen.dart';
 import 'package:safetyfeapps/screens/ProfileScreen.dart';
 import 'package:safetyfeapps/screens/login_k3_page.dart';
+import 'package:safetyfeapps/screens/ScheduleScreen.dart';
 
 
 class DashboardScreen extends StatefulWidget {
@@ -13,16 +15,16 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  bool _showAllReksaUji = false; // State untuk mengontrol tampilan item
-  late final List<Widget> _reksaUjiItems; // Deklarasikan tanpa inisialisasi awal
+  bool _showAllReksaUji = false; 
+  late final List<Widget> _reksaUjiItems; 
 
-  int _selectedIndex = 0; // State untuk melacak indeks BottomNavigationBar yang aktif
-  late PageController _pageController; // Controller untuk PageView
+  int _selectedIndex = 0; 
+  late PageController _pageController; 
 
   @override
   void initState() {
     super.initState();
-    _reksaUjiItems = [ // Inisialisasi di initState
+    _reksaUjiItems = [ 
       _buildSetoranItem('Lift', '2 Unit', Icons.elevator, Colors.teal[50]),
       _buildSetoranItem('Motor Diesel', '1 Unit', Icons.recycling, Colors.blue[50]),
       _buildSetoranItem('Listrik', '12 Lot', Icons.electric_bolt, Colors.orange[50]),
@@ -95,7 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profil',
+            label: 'Account',
           ),
         ],
       ),
@@ -218,8 +220,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: [
                       Expanded(child: _buildCashActionButton(Icons.history, 'Riwayat', () {})),
                       Expanded(child: _buildCashActionButton(Icons.swap_horiz, 'Tukar Point', () {})),
-                      Expanded(child: _buildCashActionButton(Icons.calendar_today_outlined, 'Jadwal', () {})),
-                      Expanded(child: _buildCashActionButton(Icons.account_balance_wallet, 'Dompet', () {})),
+                      Expanded(child: _buildCashActionButton(Icons.calendar_today_outlined, 'Jadwal', () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ScheduleScreen()),
+                        );
+                      })),
+                      Expanded(child: _buildCashActionButton(Icons.account_balance_wallet, 'Bayar', () {})),
                       Expanded(child: _buildCashActionButton(Icons.logout, 'Keluar', () {
                         Navigator.pushReplacement(
                           context,

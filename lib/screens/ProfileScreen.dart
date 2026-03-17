@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:safetyfeapps/screens/login_k3_page.dart';
+import 'package:safetyfeapps/screens/payment_screen.dart';
+import 'package:safetyfeapps/screens/ScheduleScreen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -69,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             const Text(
-              'Insurance',
+              'Informasi K3',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -88,9 +91,24 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             _buildSettingItem(Icons.person_outline, 'Personal information'),
-            _buildSettingItem(Icons.payments_outlined, 'Payments and disbursements'),
+            _buildSettingItem(Icons.payments_outlined, 'Payments', onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PaymentScreen()),
+              );
+            }),
             _buildSettingItem(Icons.privacy_tip_outlined, 'Privacy'),
             _buildSettingItem(Icons.notifications_none, 'Notifications'),
+            _buildSettingItem(Icons.calendar_today_outlined, 'Jadwal', onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ScheduleScreen()),
+              );
+            }),
+            _buildSettingItem(Icons.logout_outlined, 'Logout', onTap: () {
+              Navigator.pushReplacement(context, 
+              MaterialPageRoute(builder: (context) => const LoginK3Page()));
+            } ),
           ],
         ),
       ),
@@ -143,8 +161,10 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingItem(IconData icon, String title, {String? trailingText, Color? trailingColor}) {
-    return Container(
+  Widget _buildSettingItem(IconData icon, String title, {String? trailingText, Color? trailingColor, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
@@ -191,6 +211,7 @@ class ProfileScreen extends StatelessWidget {
           Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
         ],
       ),
+    ), // Kurung tutup ini yang hilang
     );
   }
 }

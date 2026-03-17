@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart'; // Import flutter_map
-import 'package:latlong2/latlong.dart'; // Import latlong2 untuk LatLng
+import 'package:flutter_map/flutter_map.dart'; 
+import 'package:latlong2/latlong.dart'; 
 import 'package:geolocator/geolocator.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  final MapController _mapController = MapController(); // Gunakan MapController dari flutter_map
+  final MapController _mapController = MapController(); 
   LatLng? _currentPosition;
   bool _isLoading = true;
   String _errorMessage = '';
@@ -25,8 +25,6 @@ class _LocationScreenState extends State<LocationScreen> {
   Future<void> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
-
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
@@ -56,8 +54,7 @@ class _LocationScreenState extends State<LocationScreen> {
       return;
     }
 
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
+    
     try {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -66,7 +63,6 @@ class _LocationScreenState extends State<LocationScreen> {
         _currentPosition = LatLng(position.latitude, position.longitude);
         _isLoading = false;
       });
-      // Pindahkan kamera ke lokasi saat ini setelah mendapatkan lokasi
       if (_currentPosition != null) {
         _mapController.move(_currentPosition!, 15.0);
       }
@@ -181,9 +177,8 @@ class _LocationScreenState extends State<LocationScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO: Implementasi navigasi ke daftar teknisi
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tombol Daftar Teknisi ditekan!')),
+            const SnackBar(content: Text('Daftar Teknisi!')),
           );
         },
         label: const Text('Daftar Teknisi'),

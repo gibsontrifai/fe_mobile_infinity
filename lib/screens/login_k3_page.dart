@@ -101,7 +101,7 @@ class _LoginK3PageState extends State<LoginK3Page> {
               ),
               const SizedBox(height: 10),
               const Text(
-                "Mengarahkan Anda ke Dashboard...",
+                "Mohon ditunggu Anda ke Dashboard...",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),
@@ -131,7 +131,7 @@ class _LoginK3PageState extends State<LoginK3Page> {
     final String password = _passwordController.text;
 
     // const String apiUrl = 'http://localhost:8080/v1/api/login'; // For web testing
-    const String apiUrl = 'http://10.0.2.2:8080/v1/api/login'; // For Android emulator
+    const String apiUrl = 'http://10.0.2.2:8080/v1/api/login'; 
 
     try {
       final response = await http.post(
@@ -148,7 +148,7 @@ class _LoginK3PageState extends State<LoginK3Page> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = jsonDecode(response.body);
         print('Login successful: ${responseData['token']}');
-        await _showSuccessAnimation(); // Tampilkan animasi sukses
+        await _showSuccessAnimation(); 
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
       } else {
         final Map<String, dynamic> errorData = jsonDecode(response.body);

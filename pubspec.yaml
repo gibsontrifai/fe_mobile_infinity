@@ -65,6 +65,14 @@ flutter:
   assets:
     - assets/helm.png
     - assets/google_logo.png
+    - assets/visa_logo.png
+    - assets/mastercard_logo.png
+    - assets/paypal_logo_small.png
+    - assets/Logo_BCA.png
+    - assets/mandiri.png
+    - assets/bni.png
+    - assets/dki.png
+    - assets/k3.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
