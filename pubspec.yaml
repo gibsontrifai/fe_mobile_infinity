@@ -31,10 +31,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
+  geolocator: ^11.0.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   http: ^1.2.1
+  lottie: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +65,14 @@ flutter:
   assets:
     - assets/helm.png
     - assets/google_logo.png
+    - assets/visa_logo.png
+    - assets/mastercard_logo.png
+    - assets/paypal_logo_small.png
+    - assets/Logo_BCA.png
+    - assets/mandiri.png
+    - assets/bni.png
+    - assets/dki.png
+    - assets/k3.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
+import 'package:safetyfeapps/screens/dashboard_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginK3Page extends StatefulWidget {
   const LoginK3Page({super.key});
@@ -12,8 +13,8 @@ class LoginK3Page extends StatefulWidget {
 class _LoginK3PageState extends State<LoginK3Page> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  //bool _isLoading = false;
-  bool _isLoading = true;
+  bool _isLoading = false;
+  final bool _bypassBackendLogin = true;
 
   @override
   void dispose() {
@@ -69,20 +70,103 @@ class _LoginK3PageState extends State<LoginK3Page> {
   //     });
   //   }
   // }
+  Future<void> _showSuccessAnimation() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0, end: 2 * 3.1415926535), 
+                duration: const Duration(seconds: 1),
+                builder: (context, angle, child) {
+                  return Transform.rotate(
+                    angle: angle,
+                    child: const Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: 60,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "Login Berhasil!",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Mohon ditunggu Anda ke Dashboard...",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    await Future.delayed(const Duration(seconds: 2)); 
+    Navigator.of(context).pop(); 
+  }
+
   Future<void> _login() async {
     setState(() {
-      _isLoading = true;
+      _isLoading = true; 
     });
 
-    await Future.delayed(const Duration(seconds: 2));
+    if (_bypassBackendLogin) {
+      await Future.delayed(const Duration(seconds: 1)); 
+      await _showSuccessAnimation(); 
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
+      return;
+    }
 
-    setState(() {
-      _isLoading = false;
-    });
+    final String email = _emailController.text;
+    final String password = _passwordController.text;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Login Berhasil!')),
-    );
+    // const String apiUrl = 'http://localhost:8080/v1/api/login'; // For web testing
+    const String apiUrl = 'http://10.0.2.2:8080/v1/api/login'; 
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': email,
+          'password': password,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        print('Login successful: ${responseData['token']}');
+        await _showSuccessAnimation(); 
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
+      } else {
+        final Map<String, dynamic> errorData = jsonDecode(response.body);
+        print('Login failed: ${errorData['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login Gagal: ${errorData['message']}')),
+        );
+      }
+    } catch (e) {
+      print('Error during login: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Terjadi kesalahan: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
